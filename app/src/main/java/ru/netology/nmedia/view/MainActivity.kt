@@ -16,7 +16,7 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    val viewModel: PostViewModel by viewModels()
+    private val viewModel: PostViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,29 +25,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         applyInset(binding.root)
 
-        val adapter = PostAdapter {
-            viewModel.likeById(it.id)
-            viewModel.shareById(it.id)
-        }
+        val adapter = PostAdapter (
+            { post -> viewModel.likeById(post.id) },
+            { post -> viewModel.shareById(post.id) }
+        )
         binding.main.adapter = adapter
 
-
         viewModel.data.observe(this) { posts ->
-            binding.main.removeAllViews()
-            posts.forEach { post ->
-                adapter.post = posts
-
-
+            adapter.submitList(posts)
             }
         }
 
-
-        private fun applyInset(main: View) {
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            }
+    }
+    private fun applyInset(main: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
     }
-}
+
