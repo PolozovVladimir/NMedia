@@ -13,15 +13,15 @@ class PostViewHolder(
 ): RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post){
         with(binding) {
-            shareQuantity.text = CountCalculator.calculator(post.share)
+            share.text = CountCalculator.calculator(post.share)
 
             share.setOnClickListener {
-                shareQuantity.text = CountCalculator.calculator(post.share)
+                share.text = CountCalculator.calculator(post.share)
             }
 
         }
         with(binding) {
-            likeQuantity.text = CountCalculator.calculator(post.likes)
+            like.text = CountCalculator.calculator(post.likes)
 //            like.setImageResource(
 //                if (post.likedByMe) {
 //                    R.drawable.baseline_favorite_24
@@ -38,6 +38,7 @@ class PostViewHolder(
             author.text = post.author
             published.text = post.published
             like.isChecked = post.likedByMe
+
 
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
