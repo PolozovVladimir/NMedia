@@ -44,15 +44,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_netology" />
 
-    <ImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/menu"
+        style="@style/App.Widget.menuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/menu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/author"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_more_vert_24" />
+        app:icon="@drawable/baseline_more_vert_24" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
