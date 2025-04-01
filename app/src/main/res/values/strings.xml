@@ -13,4 +13,5 @@
     <string name="error_empaty">error</string>
     <string name="error_empaty_content">Error</string>
     <string name="menu_edit">Edit</string>
+    <string name="chooser_share_post" />
 </resources>
