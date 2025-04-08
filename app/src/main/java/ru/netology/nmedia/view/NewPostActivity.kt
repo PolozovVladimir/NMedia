@@ -3,15 +3,11 @@ package ru.netology.nmedia.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityNewPostBinding
-import kotlin.String as String1
+import ru.netology.nmedia.dto.Post
+import ru.netology.util.focusAndShowKeyboard
 
 class NewPostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,14 +15,35 @@ class NewPostActivity : AppCompatActivity() {
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val post = intent.getParcelableExtra<Post>("post") ?: Post()
+        binding.content.setText(post.content)
+        binding.content.focusAndShowKeyboard()
+
+        binding.ok.setOnClickListener {
+            val content = binding.content.text.toString()
+            if (content.isBlank()) {
+                setResult(RESULT_CANCELED)
+            } else {
+                val resultPost = post.copy(content = content)
+                setResult(RESULT_OK, Intent().apply {
+                    putExtra("post", resultPost)
+                })
+            }
+            finish()
+        }
     }
 }
 
-object NewPostContract : ActivityResultContract<Unit, String?>(){
+
+object NewPostContract : ActivityResultContract<Post, Post?>(){
+
+    override fun createIntent(context: Context, input: Post) =
+        Intent(context, NewPostActivity::class.java).apply {
+            putExtra("post", input)
+        }
+
+    override fun parseResult(resultCode: Int, intent: Intent?) =
+        intent?.getParcelableExtra<Post>("post")
+        }
 
 
-    override fun createIntent(context: Context, input: Unit) = Intent(context, NewPostActivity::class.java)
-
-    override fun parseResult(resultCode: Int, intent: Intent?) = intent?.getStringExtra(Intent.EXTRA_TEXT)
-
-}

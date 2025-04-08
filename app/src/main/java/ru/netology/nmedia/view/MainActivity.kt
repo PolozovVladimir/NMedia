@@ -23,20 +23,36 @@ import ru.netology.util.focusAndShowKeyboard
 class MainActivity : AppCompatActivity() {
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val viewModel: PostViewModel by viewModels()
-        val newPostLauncher = registerForActivityResult(NewPostContract) { content ->
-            content ?: return@registerForActivityResult
-            viewModel.changeContent(content.toString())
-            viewModel.save()
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            enableEdgeToEdge()
+            val binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
+            val viewModel: PostViewModel by viewModels()
+
+            val postLauncher = registerForActivityResult(NewPostContract) { resultPost ->
+                resultPost?.let { post ->
+                    if (post.id == 0L) {
+                        viewModel.create(post)
+                    } else {
+                        viewModel.update(post)
+                    }
+                }
+            }
+
+            binding.add.setOnClickListener{
+                postLauncher.launch(Post())
+            }
             val adapter = PostAdapter(object : OnInteractionListener {
+
+
                 override fun onLike(post: Post) {
                     viewModel.likeById(post.id)
+                }
+
+                override fun onEdit(post: Post){
+                    postLauncher.launch(post)
                 }
 
                 override fun onShare(post: Post) {
@@ -54,9 +70,6 @@ class MainActivity : AppCompatActivity() {
                     viewModel.removeById(post.id)
                 }
 
-                override fun onEdit(post: Post) {
-                    viewModel.edit(post)
-                }
 
             }
             )
@@ -68,9 +81,14 @@ class MainActivity : AppCompatActivity() {
                     if (newPost) {
                         binding.main.smoothScrollToPosition(0)
                     }
+
                 }
             }
+
         }
+
     }
-}
+
+
+
 
