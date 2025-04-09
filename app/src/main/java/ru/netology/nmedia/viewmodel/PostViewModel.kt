@@ -1,8 +1,8 @@
 package ru.netology.nmedia.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryInMemory
@@ -26,8 +26,12 @@ class PostViewModel : ViewModel() {
 
     fun removeById(id: Long) = repository.removeById(id)
 
-    fun create(post: Post) = repository.create(post)
+    fun create(content: String) = repository.create(content)
 
-    fun update(post: Post) = repository.update(post)
+    fun updateContent(id: Long, newContent: String) {
+        viewModelScope.launch {
+            repository.updateContent(id, newContent)
+        }
 
+    }
 }

@@ -45,35 +45,6 @@ class PostRepositoryInMemory : PostRepository {
         data.value = posts
     }
 
-
-
-    override fun cancel(post: Post) {
-        posts = posts.map {
-            if (it.id == post.id) post else it
-        }
-        data.value = posts
-    }
-
-    override fun create(post: Post) {
-        posts = listOf(
-            post.copy(
-                id = (posts.maxByOrNull {it.id}?.id ?: 0L) +1L,
-                author = "me",
-                published = "Now",
-                likes = 0,
-                share = 0,
-            )
-        ) + posts
-        data.value = posts
-    }
-
-    override fun update(post: Post) {
-        posts = posts.map {
-            if (it.id == post.id) post else it
-        }
-        data.value = posts
-    }
-
     override fun shareById(id: Long) {
         posts = posts.map { post ->
             if (post.id == id) {
@@ -86,4 +57,34 @@ class PostRepositoryInMemory : PostRepository {
         }
         data.value = posts
     }
+
+
+    override fun cancel(post: Post) {
+        posts = posts.map {
+            if (it.id == post.id) post else it
+        }
+        data.value = posts
+    }
+
+    override fun create(content: String) {
+        posts = listOf(
+            Post(
+                id = generateNewId(),
+                content = content,
+                author = "Me",
+                published = "Now"
+            )
+        ) + posts
+        data.value = posts
+    }
+
+    override fun updateContent(id: Long, newContent: String) {
+        posts = posts.map {
+            if (it.id == id) it.copy(content = newContent) else it
+        }
+        data.value = posts
+    }
+
+    private fun generateNewId() = (posts.maxByOrNull { it.id }?.id ?: 0L) + 1L
 }
+

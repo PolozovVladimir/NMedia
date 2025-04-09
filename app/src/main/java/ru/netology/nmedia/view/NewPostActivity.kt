@@ -1,5 +1,6 @@
 package ru.netology.nmedia.view
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,18 +16,20 @@ class NewPostActivity : AppCompatActivity() {
         val binding = ActivityNewPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val post = intent.getParcelableExtra<Post>("post") ?: Post()
-        binding.content.setText(post.content)
+        val postId = intent.getLongExtra("post_id", 0L)
+        val content = intent.getStringExtra("content") ?: ""
+
+        binding.content.setText(content)
         binding.content.focusAndShowKeyboard()
 
         binding.ok.setOnClickListener {
-            val content = binding.content.text.toString()
-            if (content.isBlank()) {
+            val newContent = binding.content.text.toString()
+            if (newContent.isBlank()) {
                 setResult(RESULT_CANCELED)
             } else {
-                val resultPost = post.copy(content = content)
                 setResult(RESULT_OK, Intent().apply {
-                    putExtra("post", resultPost)
+                    putExtra("post_id", postId)
+                    putExtra("content", newContent)
                 })
             }
             finish()
@@ -35,15 +38,22 @@ class NewPostActivity : AppCompatActivity() {
 }
 
 
-object NewPostContract : ActivityResultContract<Post, Post?>(){
-
-    override fun createIntent(context: Context, input: Post) =
+object NewPostContract : ActivityResultContract<Pair<Long, String>, Pair<Long, String>?>() {
+    override fun createIntent(context: Context, input: Pair<Long, String>) =
         Intent(context, NewPostActivity::class.java).apply {
-            putExtra("post", input)
+            putExtra("post_id", input.first)
+            putExtra("content", input.second)
         }
 
-    override fun parseResult(resultCode: Int, intent: Intent?) =
-        intent?.getParcelableExtra<Post>("post")
+    override fun parseResult(resultCode: Int, intent: Intent?): Pair<Long, String>? {
+        return if (resultCode == RESULT_OK) {
+            intent?.run {
+                getLongExtra("post_id", 0L) to getStringExtra("content").orEmpty()
+            }
+        }  else {
+            null
         }
+    }
+}
 
 

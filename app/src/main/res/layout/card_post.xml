@@ -73,6 +73,7 @@
         app:layout_constraintTop_toBottomOf="@id/barrier"
         tools:text="@sample/posts.json/data/content" />
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like"
         style="@style/App.Widget.LikeButton"

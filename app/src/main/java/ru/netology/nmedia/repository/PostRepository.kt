@@ -9,7 +9,7 @@ interface PostRepository {
     fun shareById (id: Long)
     fun removeById (id: Long)
     fun cancel (post: Post)
-    fun create (post: Post)
-    fun update (post: Post)
+    fun create(content: String)
+    fun updateContent(id: Long, newContent: String)
 
 }

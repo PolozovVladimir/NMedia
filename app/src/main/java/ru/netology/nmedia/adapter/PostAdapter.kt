@@ -13,6 +13,7 @@ interface OnInteractionListener{
     fun onRemove(post: Post)
     fun onEdit(post: Post)
 
+
 }
 
 class PostAdapter(
