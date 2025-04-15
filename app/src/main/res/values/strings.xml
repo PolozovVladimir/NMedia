@@ -1,6 +1,6 @@
 <resources>
-    <string name="no_video_app">No app to play video</string>
-    <string name="video_preview">Video preview</string>
+    <string name="no_video_app" translatable="false">No app to play video</string>
+    <string name="video_preview" translatable="false">Video preview</string>
     <string name="app_name">NMedia!</string>
     <string name="nmedia">NMedia!</string>
     <string name="avatar">Avatar</string>
@@ -8,12 +8,12 @@
     <string name="like">like</string>
     <string name="share">share</string>
     <string name="viewing">viewing</string>
-    <string name="menu_remov">menu_remov</string>
-    <string name="remove">menu_remove</string>
-    <string name="menu_remove">remove</string>
-    <string name="post_text">text</string>
-    <string name="error_empaty">error</string>
-    <string name="error_empaty_content">Error</string>
-    <string name="menu_edit">Edit</string>
-    <string name="chooser_share_post" />
+    <string name="menu_remov" translatable="false">menu_remov</string>
+    <string name="remove" translatable="false">menu_remove</string>
+    <string name="menu_remove" translatable="false">remove</string>
+    <string name="post_text" translatable="false">text</string>
+    <string name="error_empaty" translatable="false">error</string>
+    <string name="error_empaty_content" translatable="false">Error</string>
+    <string name="menu_edit" translatable="false">Edit</string>
+    <string name="chooser_share_post" translatable="false" />
 </resources>
