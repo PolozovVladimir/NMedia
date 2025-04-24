@@ -1,11 +1,14 @@
 package ru.netology.nmedia.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryInMemory
+import ru.netology.nmedia.repository.PostRepositoryInSharedPrefsImpl
 
 val empty = Post(
     id = 0,
@@ -16,8 +19,8 @@ val empty = Post(
     shareByMe = false,
 )
 
-class PostViewModel : ViewModel() {
-    val repository: PostRepository = PostRepositoryInMemory()
+class PostViewModel(application: Application) : AndroidViewModel(application) {
+    val repository: PostRepository = PostRepositoryInSharedPrefsImpl(application)
     val data = repository.get()
 
     fun likeById(id: Long) = repository.likeById(id)
